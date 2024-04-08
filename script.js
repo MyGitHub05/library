@@ -37,8 +37,21 @@ function renderBooks() {
   table.appendChild(tableHeader4);
 
   //data we put on table
-  myLibrary.forEach((book) => {
+  myLibrary.forEach((book, index) => {
+    const i = index;
     const tableRow = document.createElement("tr");
+    const del = document.createElement("button");
+    const change = document.createElement("button");
+
+    change.textContent = "change";
+    change.className = "delete-btn";
+
+    del.textContent = "Delete";
+    del.className = "delete-btn";
+
+    del.addEventListener("click", () => {
+      deleteBook(i);
+    });
 
     const tableData1 = document.createElement("td");
     const tableData2 = document.createElement("td");
@@ -54,7 +67,15 @@ function renderBooks() {
     tableRow.appendChild(tableData2);
     tableRow.appendChild(tableData3);
     tableRow.appendChild(tableData4);
+    tableRow.appendChild(del);
+    tableData4.appendChild(change);
+
     table.appendChild(tableRow);
+
+    change.addEventListener("click", () => {
+      book.read = !book.read;
+      renderBooks();
+    });
   });
 }
 
@@ -93,4 +114,9 @@ function addBookToLibrary(title, author, pages, read) {
   const book = new Book(title, author, pages, read);
 
   myLibrary.push(book);
+}
+
+function deleteBook(index) {
+  myLibrary.splice(index, 1);
+  renderBooks();
 }
